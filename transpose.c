@@ -39,14 +39,13 @@ void main(int argc, char* argv[])
     display(A,N);
     printf("\n");
 
-    //omp_set_num_threads(Thread_Num);
+    omp_set_num_threads(Thread_Num);
 
-     //#pragma omp parallel
-     //{
-         //int thread_id = omp_get_thread_num();
-         //int numThreads = omp_get_num_threads();
+    
+     #pragma omp parallel
+     {
 
-         //#pragma omp parallel for
+        #pragma omp parallel for
          for(int row=0;row<N ; row++)
          {
             for(int col = row; col<N ; col++)
@@ -56,10 +55,8 @@ void main(int argc, char* argv[])
                A[col][row] = temp;  
     
             }
-    
          }
-         
-     //}
+     }
      
     display(A,N);
     printf("\n");
