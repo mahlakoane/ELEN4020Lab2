@@ -40,20 +40,17 @@ void main(int argc, char* argv[])
     printf("\n");
 
     omp_set_num_threads(Thread_Num);
-
-    
      #pragma omp parallel
      {
 
-        #pragma omp parallel for
+        #pragma omp for     // Introduces the threads scheduling, and does not leave it to the system
          for(int row=0;row<N ; row++)
          {
-            for(int col = row; col<N ; col++)
+            for(int col = row+1; col<N ; col++)
             {
                int temp = A[row][col];
                A[row][col] = A[col][row];
                A[col][row] = temp;  
-    
             }
          }
      }
