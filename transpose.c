@@ -4,10 +4,11 @@
 #include <time.h>
 
 void display(int** A,int N);
+void diagonalOMP(int** A,int N,int Thread_Num);
 
 void main(int argc, char* argv[])
 {
-    int N = 128;  // smallest requetsed value.
+    int N = 128;  // smallest requested N value.
     int Thread_Num = 1;
     
     if(argc > 1)
@@ -39,21 +40,7 @@ void main(int argc, char* argv[])
     display(A,N);
     printf("\n");
 
-    omp_set_num_threads(Thread_Num);
-     #pragma omp parallel
-     {
-
-        #pragma omp for     // Introduces the threads scheduling, and does not leave it to the system
-         for(int row=0;row<N ; row++)
-         {
-            for(int col = row+1; col<N ; col++)
-            {
-               int temp = A[row][col];
-               A[row][col] = A[col][row];
-               A[col][row] = temp;  
-            }
-         }
-     }
+    diagonalOMP(A,N,Thread_Num);
      
     display(A,N);
     printf("\n");
@@ -70,4 +57,24 @@ void display(int** A,int N)
          }
          printf("\n");       
      }    
+}
+
+
+void diagonalOMP(int** A,int N,int Thread_Num)
+{
+    omp_set_num_threads(Thread_Num);
+     #pragma omp parallel
+     {
+
+        #pragma omp for     // Introduces the threads scheduling, and does not leave it to the system
+         for(int row=0;row<N ; row++)
+         {
+            for(int col = row+1; col<N ; col++)
+            {
+               int temp = A[row][col];
+               A[row][col] = A[col][row];
+               A[col][row] = temp;  
+            }
+         }
+     }
 }
